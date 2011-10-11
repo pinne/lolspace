@@ -15,37 +15,33 @@ import javax.swing.event.*;
 
 class View extends JPanel {
 
-    private Model model;
-    private ArrayList<Block> blocks;
+    private static final long serialVersionUID = 1L;
+    private JFrame frame;
+    private JButton[] buttons;
 
-    public View(Model m) {
+    private final static int CELLROWS = 16;
+    private final static int CELLCOLS = 12;
+    private final static int CELLWIDTH = 32;
+    private final static int CELLHEIGHT = 32;
+
+    public View(GameWorld m) {
         super();
-        this.model = m;
+        frame = new JFrame("Collapse");
+        this.setLayout(new GridLayout(16, 12));
 
-        // En grafisk representation av värdet
-        blocks = new ArrayList<Block>();
-        for (Block b : blocks)
-            this.setPreferredSize(new Dimension(64, 64));
+        frame.add(this);
 
-        // Skapa controllern, d v s lyssnaren
-        Controller con = new Controller(model, this);
+        buttons = new JButton[CELLROWS * CELLCOLS];
 
-        this.add(new JLabel("Block "));
-        // this.add(blocks);
-        this.updateView();
-    }
-
-    // Metod för att uppdatera vyn
-    public void updateView() {
-        int val = model.getValue();
-        for (Block b : blocks) {
-            this.repaint();
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i] = new JButton();
+            buttons[i].setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT));
+            // buttons[i].addActionListener(bl);
+            this.add(buttons[i]);
         }
-    }
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
 
-        g.setColor(Color.white);
-        g.fillRect(0, 0, 32, 32);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

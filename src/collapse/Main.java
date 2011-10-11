@@ -6,21 +6,16 @@
 
 package collapse;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  *  
  */
 public class Main {
     public static void main(String[] args) {
-        Model model = new Model(0, 100);
-        View view = new View(model);
+        GameWorld world = new GameWorld();
+        View view = new View(world);
 
-        JFrame frame = new JFrame("Collapse");
-        frame.getContentPane().add(view);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(384, 512);
-        frame.setVisible(true);
-        frame.setResizable(false);
+        System.out.println("Main done.");
     }
 }

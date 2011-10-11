@@ -1,37 +1,47 @@
 package collapse;
 
-public class Cell {
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+
+public class Cell extends JButton implements ActionListener {
+    private Control controller;
     private boolean alive;
-    private int x;
-    private int y;
+    private int cellX;
+    private int cellY;
 
     public Cell(int x, int y) {
         alive = true;
-        this.x = x;
-        this.y = y;
+        this.cellX = x;
+        this.cellY = y;
+        this.setBackground(Color.DARK_GRAY);
+        this.setOpaque(true);
+        this.addActionListener(this);
     }
 
     public boolean isAlive() {
+        this.setOpaque(true);
         return alive;
     }
 
     public void setDead() {
+        // this.setOpaque(false);
+        this.setVisible(false);
+        this.setEnabled(false);
         this.alive = false;
     }
 
-    public int getX() {
-        return x;
+    public void cellClicked() {
+        controller.setClicked();
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void cellClicked(Object source) {
+        System.out.println(source);
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void actionPerformed(ActionEvent e) {
+        cellClicked();
     }
 }

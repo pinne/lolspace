@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class View extends JPanel {
+public class View extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private JFrame frame;
-    private JButton[] buttons;
+    private GameWorld gameworld;
+    private JButton[][] buttons;
 
     private final static int CELLROWS = 16;
     private final static int CELLCOLS = 12;
@@ -26,22 +26,22 @@ class View extends JPanel {
 
     public View(GameWorld m) {
         super();
-        frame = new JFrame("Collapse");
         this.setLayout(new GridLayout(16, 12));
+        this.setPreferredSize(new Dimension(CELLWIDTH * CELLCOLS, CELLHEIGHT
+                * CELLROWS));
 
-        frame.add(this);
+        buttons = new Cell[CELLROWS][CELLCOLS];
+        this.initCells();
+    }
 
-        buttons = new JButton[CELLROWS * CELLCOLS];
-
-        for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new JButton();
-            buttons[i].setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT));
-            // buttons[i].addActionListener(bl);
-            this.add(buttons[i]);
+    private void initCells() {
+        for (int i = 0; i < CELLROWS; i++) {
+            for (int j = 0; j < CELLCOLS; j++) {
+                buttons[i][j] = new Cell(i, j);
+                buttons[i][j].setPreferredSize(new Dimension(CELLWIDTH,
+                        CELLHEIGHT));
+                this.add(buttons[i][j]);
+            }
         }
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 }

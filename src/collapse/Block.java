@@ -7,61 +7,42 @@ import java.util.Random;
 public class Block {
 
     private static final Random RANDOM = new Random();
-    private ArrayList<Block> group;
     private Point block;
     private boolean alive;
     private int cellType;
-    private boolean visited;
 
-    public Block(int x, int y) {
-        alive = true;
-        visited = false;
+    public Block(int i, int j) {
+        setDead();
         this.cellType = RANDOM.nextInt(4);
-        block = new Point(x, y);
+        block = new Point(i, j);
     }
-
-    public ArrayList<Block> groupBlocks(Block that) {
-        if (visited) {
-            System.out.println("Visited");
-            return null;
-        } else {
-            System.out.println("Not visited");
-            group = new ArrayList<Block>();
-        }
-
-        if (this.compareTo(that) == 0)
-            group.add(that);
-
-        return group;
+    
+    public void create() {
+        alive = true;
+        this.cellType = RANDOM.nextInt(4);
     }
 
     public Block getObject() {
-        return this;
+        Block copy = this;
+        return copy;
     }
 
     public boolean isAlive() {
         return alive;
     }
 
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
-
-    public void setAlive() {
-        alive = true;
-    }
-
     public void setDead() {
         alive = false;
+        cellType = -1;
     }
 
     public void setPos(Point p) {
         this.block = p;
     }
 
-    public void makePoint(int x, int y) {
-        block.x = x;
-        block.y = y;
+    public void makePoint(int i, int j) {
+        block.y = i;
+        block.x = j;
     }
 
     public Point getPos() {
@@ -75,11 +56,19 @@ public class Block {
     public int getType() {
         return cellType;
     }
+    
+    public int getCellType() {
+        return cellType;
+    }
+
+    public void setCellType(int cellType) {
+        this.cellType = cellType;
+    }
 
     public void toggle() {
         if (isAlive())
             setDead();
         else
-            setAlive();
+            alive = true;
     }
 }

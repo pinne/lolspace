@@ -7,12 +7,10 @@
 package collapse;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class View extends JPanel implements ActionListener {
+public class View extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private GameWorld gameworld;
@@ -36,12 +34,15 @@ public class View extends JPanel implements ActionListener {
     }
 
     public void updateCells() {
-        for (int i = 0; i < cellRows; i++) {
+        for (int i = 0; i < cellRows-1; i++) {
             for (int j = 0; j < cellCols; j++) {
                 if (gameworld.isAlive(i, j)) {
-                    buttons[i][j].setOpaque(true);
-                } else {
-                    buttons[i][j].setOpaque(false);
+                    ((ViewCell) buttons[i][j]).setAlive();
+                    ((ViewCell) buttons[i][j]).setColor(gameworld.getType(i, j));
+                }
+                else {
+                    ((ViewCell) buttons[i][j]).setDead();
+                    ((ViewCell) buttons[i][j]).setColor(-1);
                 }
             }
         }
@@ -57,10 +58,5 @@ public class View extends JPanel implements ActionListener {
                 this.add(buttons[i][j]);
             }
         }
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        this.updateCells();
     }
 }

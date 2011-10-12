@@ -20,8 +20,6 @@ public class Control implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        gameworld.clickBlock(cell);
-        view.updateCells();
     }
 
     @Override
@@ -39,10 +37,10 @@ public class Control implements ActionListener, MouseListener {
     @Override
     public void mousePressed(MouseEvent e) {
         gameworld.clickBlock(cell);
+        view.updateCells();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        view.updateCells();
     }
 }

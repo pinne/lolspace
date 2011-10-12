@@ -11,23 +11,40 @@ public class ViewCell extends JButton {
     private boolean alive;
     private Point cell;
 
-    public ViewCell(GameWorld gameworld, View view, int x, int y) {
-        alive = true;
-        cell = new Point(x, y);
-        this.setBackground(Color.DARK_GRAY);
-        this.setOpaque(true);
+    public ViewCell(GameWorld gameworld, View view, int i, int j) {
+        cell = new Point(i, j);
+        this.setBackground(Color.LIGHT_GRAY);
+        setColor(gameworld.getType(i, j));
         setBorderPainted(false);
-        setColor(gameworld.getType(x, y));
+        setDead();
         this.addMouseListener(new Control(gameworld, view, cell));
     }
 
-    private void setColor(int type) {
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive() {
+        this.setOpaque(true);
+        this.alive = true;
+    }
+
+    public void setDead() {
+        this.setOpaque(false);
+        this.alive = false;
+        this.setColor(-1);
+    }
+
+    public void setColor(int type) {
         Color hotpink = new Color(255, 105, 180);
         Color lightskyblue = new Color(135, 206, 250);
-        Color orange = new Color(255, 165, 0); 
-        Color palegreen = new Color(152, 251, 152); 
-        
+        Color orange = new Color(255, 165, 0);
+        Color palegreen = new Color(152, 251, 152);
+
         switch (type) {
+        case -1:
+            this.setBackground(Color.LIGHT_GRAY);
+            break;
         case 0:
             this.setBackground(hotpink);
             break;
@@ -41,19 +58,5 @@ public class ViewCell extends JButton {
             this.setBackground(palegreen);
             break;
         }
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive() {
-        this.setOpaque(false);
-        this.alive = true;
-    }
-
-    public void setDead() {
-        this.setOpaque(true);
-        this.alive = false;
     }
 }

@@ -23,6 +23,7 @@ public class View extends JPanel implements ActionListener {
     public View(GameWorld world, int cellrows, int cellcols, int cellwidth,
             int cellheight) {
         super();
+        this.setBackground(Color.DARK_GRAY);
         this.gameworld = world;
         this.cellrows = cellrows;
         this.cellcols = cellcols;
@@ -36,12 +37,13 @@ public class View extends JPanel implements ActionListener {
 
     public void updateCells() {
         for (int i = 0; i < this.cellrows; i++)
-            for (int j = 0; j < this.cellcols; j++)
+            for (int j = 0; j < this.cellcols; j++) {
                 if (gameworld.isAlive(i, j)) {
                     buttons[i][j].setOpaque(true);
                 } else {
                     buttons[i][j].setOpaque(false);
                 }
+            }
     }
 
     private void initCells(int cellrows, int cellcols,

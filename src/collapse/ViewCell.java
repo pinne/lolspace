@@ -16,7 +16,25 @@ public class ViewCell extends JButton {
         cell = new Point(x, y);
         this.setBackground(Color.DARK_GRAY);
         this.setOpaque(true);
+        setColor(gameworld.getType(x, y));
         this.addActionListener(new Control(gameworld, view, cell));
+    }
+
+    private void setColor(int type) {
+        switch (type) {
+        case 0:
+            this.setBackground(Color.RED);
+            break;
+        case 1:
+            this.setBackground(Color.BLUE);
+            break;
+        case 2:
+            this.setBackground(Color.GREEN);
+            break;
+        case 3:
+            this.setBackground(Color.WHITE);
+            break;
+        }
     }
 
     public boolean isAlive() {

@@ -7,41 +7,58 @@
 package collapse;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
-public class View extends JPanel {
+public class View extends JPanel implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     private GameWorld gameworld;
     private JButton[][] buttons;
+    private int cellrows;
+    private int cellcols;
 
-    private final static int CELLROWS = 16;
-    private final static int CELLCOLS = 12;
-    private final static int CELLWIDTH = 32;
-    private final static int CELLHEIGHT = 32;
-
-    public View(GameWorld m) {
+    public View(GameWorld world, int cellrows, int cellcols, int cellwidth,
+            int cellheight) {
         super();
+        this.gameworld = world;
+        this.cellrows = cellrows;
+        this.cellcols = cellcols;
         this.setLayout(new GridLayout(16, 12));
-        this.setPreferredSize(new Dimension(CELLWIDTH * CELLCOLS, CELLHEIGHT
-                * CELLROWS));
+        this.setPreferredSize(new Dimension(cellwidth * cellcols, cellheight
+                * cellrows));
 
-        buttons = new Cell[CELLROWS][CELLCOLS];
-        this.initCells();
+        buttons = new ViewCell[cellrows][cellcols];
+        this.initCells(cellrows, cellcols, cellwidth, cellheight);
     }
 
-    private void initCells() {
-        for (int i = 0; i < CELLROWS; i++) {
-            for (int j = 0; j < CELLCOLS; j++) {
-                buttons[i][j] = new Cell(i, j);
-                buttons[i][j].setPreferredSize(new Dimension(CELLWIDTH,
-                        CELLHEIGHT));
+    public void updateCells() {
+        for (int i = 0; i < this.cellrows; i++)
+            for (int j = 0; j < this.cellcols; j++)
+                if (gameworld.isAlive(i, j)) {
+                    buttons[i][j].setOpaque(true);
+                } else {
+                    buttons[i][j].setOpaque(false);
+                }
+    }
+
+    private void initCells(int cellrows, int cellcols,
+                              int cellwidth, int cellheight) {
+        for (int i = 0; i < cellrows; i++) {
+            for (int j = 0; j < cellcols; j++) {
+                buttons[i][j] = new ViewCell(gameworld, this, i, j);
+                buttons[i][j].setPreferredSize(new Dimension(cellwidth,
+                        cellheight));
                 this.add(buttons[i][j]);
             }
         }
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("action View");
+        this.updateCells();
     }
 }

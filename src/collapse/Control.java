@@ -1,19 +1,24 @@
 package collapse;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Control implements ActionListener {
 
-    private GameWorld gameworld;
+    private GameWorld gameworld = null;
+    private View view;
+    private Point cell;
 
-    public void setClicked() {
-        // TODO Auto-generated method stub
-        System.out.println("clicked from Control");
+    public Control(GameWorld gameworld, View view, Point cell) {
+        this.gameworld = gameworld;
+        this.view = view;
+        this.cell = cell;
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
-        // TODO Auto-generated method stub        
+    public void actionPerformed(ActionEvent e) {
+        gameworld.clickBlock(cell);
+        view.updateCells();
     }
 }

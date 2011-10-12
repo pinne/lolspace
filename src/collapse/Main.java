@@ -12,10 +12,16 @@ import javax.swing.*;
  *  
  */
 public class Main {
+    private final static int CELLROWS = 16;
+    private final static int CELLCOLS = 12;
+    private final static int CELLWIDTH = 32;
+    private final static int CELLHEIGHT = 32;
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Collapse");
-        GameWorld world = new GameWorld();
-        View view = new View(world);
+        GameWorld world = new GameWorld(CELLROWS, CELLCOLS);
+        View view = new View(world, CELLROWS, CELLCOLS, CELLWIDTH,
+                CELLHEIGHT);
         JMenuBar menu = new JMenuBar();
 
         JMenu fileMenu = new JMenu("File");

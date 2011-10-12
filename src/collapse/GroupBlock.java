@@ -19,5 +19,4 @@ public class GroupBlock extends List {
         System.out.println("Added block to group " + this.getName());
         blocks.add(b);
     }
-
 }

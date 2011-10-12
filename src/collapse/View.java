@@ -17,16 +17,16 @@ public class View extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
     private GameWorld gameworld;
     private JButton[][] buttons;
-    private int cellrows;
-    private int cellcols;
+    private int cellRows;
+    private int cellCols;
 
     public View(GameWorld world, int cellrows, int cellcols, int cellwidth,
             int cellheight) {
         super();
         this.setBackground(Color.DARK_GRAY);
         this.gameworld = world;
-        this.cellrows = cellrows;
-        this.cellcols = cellcols;
+        this.cellRows = cellrows;
+        this.cellCols = cellcols;
         this.setLayout(new GridLayout(16, 12));
         this.setPreferredSize(new Dimension(cellwidth * cellcols, cellheight
                 * cellrows));
@@ -36,14 +36,15 @@ public class View extends JPanel implements ActionListener {
     }
 
     public void updateCells() {
-        for (int i = 0; i < this.cellrows; i++)
-            for (int j = 0; j < this.cellcols; j++) {
+        for (int i = 0; i < cellRows; i++) {
+            for (int j = 0; j < cellCols; j++) {
                 if (gameworld.isAlive(i, j)) {
                     buttons[i][j].setOpaque(true);
                 } else {
                     buttons[i][j].setOpaque(false);
                 }
             }
+        }
     }
 
     private void initCells(int cellrows, int cellcols,
@@ -60,7 +61,6 @@ public class View extends JPanel implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("action View");
         this.updateCells();
     }
 }

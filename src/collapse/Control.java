@@ -3,8 +3,10 @@ package collapse;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Control implements ActionListener {
+public class Control implements ActionListener, MouseListener {
 
     private GameWorld gameworld = null;
     private View view;
@@ -19,6 +21,28 @@ public class Control implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         gameworld.clickBlock(cell);
+        view.updateCells();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        gameworld.clickBlock(cell);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
         view.updateCells();
     }
 }

@@ -1,11 +1,9 @@
 package collapse;
 
 import java.awt.Point;
-import java.util.ArrayList;
 
 public class GameWorld {
     private Block[][] blocks = null;
-    private ArrayList<GroupBlock> groupBlocks;
     private int cellRows;
     private int cellCols;
 
@@ -13,10 +11,27 @@ public class GameWorld {
         this.cellRows = cellRows;
         this.cellCols = cellCols;
         blocks = new Block[cellRows][cellCols];
-        groupBlocks = new ArrayList<GroupBlock>();
         fillWithBlocks();
-        createGroup();
+        nextRound();
     }
+
+    private void nextRound() {
+        for (int j = 0; j < cellCols; j++) {
+            blocks[15][j] = new Block(15, j);
+        }
+    }
+
+    // private void regroup() {
+    // for (int i = 0; i < cellRows; i++) {
+    // for (int j = 0; j < cellCols; j++) {
+    // Block current = blocks[i][j];
+    // // current.groupBlocks(blocks[i][j-1]);
+    // // current.groupBlocks(blocks[i][j+1]);
+    // // current.groupBlocks(blocks[i-1][j]);
+    // // current.groupBlocks(blocks[i+1][j]);
+    // }
+    // }
+    // }
 
     public void fillWithBlocks() {
         for (int i = 0; i < cellRows; i++) {
@@ -26,46 +41,25 @@ public class GameWorld {
         }
     }
 
-    // TODO: big fucking todo, rekursiv algoritm?
-    public void createGroup() {
-        int k = 0;
-
-        for (int i = 1; i < cellRows - 1; i++) {
-            for (int j = 1; j < cellCols - 1; j++) {
-                Block current = blocks[i][j];
-
-                if (current.compareTo(blocks[i-1][j-1]) == 0)
-                    ;
-                if (current.compareTo(blocks[i-1][j]) == 0)
-                    ;
-                if (current.compareTo(blocks[i-1][j+1]) == 0)
-                    ;
-                if (current.compareTo(blocks[i][j-1]) == 0)
-                    ;
-                if (current.compareTo(blocks[i][j+1]) == 0)
-                    ;
-                if (current.compareTo(blocks[i+1][j]) == 0)
-                    ;
-                if (current.compareTo(blocks[i+1][j+1]) == 0)
-                    ;
-                if (!current.isVisited()) {
-                    System.out.println("Found group");
-                    groupBlocks.add(new GroupBlock(current));
-                }
-            }
+    public boolean isAlive(int i, int j) {
+        try {
+            return blocks[i][j].isAlive();
+        } catch (NullPointerException e) {
+            return false;
         }
     }
 
-    public boolean isAlive(int i, int j) {
-        return blocks[i][j].isAlive();
-    }
-    
     public int getType(int i, int j) {
-        return blocks[i][j].getType();
+        try {
+            return blocks[i][j].getType();
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     public void clickBlock(Point cell) {
         System.out.println(cell.toString());
         blocks[cell.x][cell.y].toggle();
+        nextRound();
     }
 }

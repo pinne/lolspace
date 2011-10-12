@@ -16,23 +16,29 @@ public class ViewCell extends JButton {
         cell = new Point(x, y);
         this.setBackground(Color.DARK_GRAY);
         this.setOpaque(true);
+        setBorderPainted(false);
         setColor(gameworld.getType(x, y));
-        this.addActionListener(new Control(gameworld, view, cell));
+        this.addMouseListener(new Control(gameworld, view, cell));
     }
 
     private void setColor(int type) {
+        Color hotpink = new Color(255, 105, 180);
+        Color lightskyblue = new Color(135, 206, 250);
+        Color orange = new Color(255, 165, 0); 
+        Color palegreen = new Color(152, 251, 152); 
+        
         switch (type) {
         case 0:
-            this.setBackground(Color.RED);
+            this.setBackground(hotpink);
             break;
         case 1:
-            this.setBackground(Color.BLUE);
+            this.setBackground(lightskyblue);
             break;
         case 2:
-            this.setBackground(Color.GREEN);
+            this.setBackground(orange);
             break;
         case 3:
-            this.setBackground(Color.WHITE);
+            this.setBackground(palegreen);
             break;
         }
     }

@@ -21,11 +21,6 @@ public class Block {
         this.cellType = RANDOM.nextInt(4);
     }
 
-    public Block getObject() {
-        Block copy = this;
-        return copy;
-    }
-
     public boolean isAlive() {
         return alive;
     }
@@ -49,11 +44,7 @@ public class Block {
     }
 
     public int compareTo(Block b1) {
-        return this.cellType - b1.getType();
-    }
-
-    public int getType() {
-        return cellType;
+        return this.cellType - b1.getCellType();
     }
     
     public int getCellType() {
@@ -69,5 +60,9 @@ public class Block {
             setDead();
         else
             alive = true;
+    }
+
+    public void moveUp() {
+//        block.y--;
     }
 }

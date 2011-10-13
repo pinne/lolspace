@@ -6,6 +6,9 @@
 
 package collapse;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 /**
@@ -27,8 +30,10 @@ public class Main {
         menu.add(fileMenu);
         JMenuItem newItem = new JMenuItem("New game");
         JMenuItem quitItem = new JMenuItem("Exit");
+
         fileMenu.add(newItem);
         fileMenu.add(quitItem);
+//        quitItem.addActionListener(new QuitAction());
 
         JMenu helpMenu = new JMenu("Help");
         menu.add(helpMenu);
@@ -42,5 +47,12 @@ public class Main {
         frame.setVisible(true);
 
         System.out.println("Main done.");
+    }
+
+    class QuitAction implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
     }
 }

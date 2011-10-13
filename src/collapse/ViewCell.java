@@ -25,12 +25,13 @@ public class ViewCell extends JButton {
     }
 
     public void setAlive() {
+        this.setColor(2);
         this.setOpaque(true);
         this.alive = true;
     }
 
     public void setDead() {
-        this.setOpaque(false);
+        this.setOpaque(true);
         this.alive = false;
         this.setColor(-1);
     }
@@ -47,6 +48,7 @@ public class ViewCell extends JButton {
             break;
         case 0:
             this.setBackground(hotpink);
+            this.setForeground(palegreen);
             break;
         case 1:
             this.setBackground(lightskyblue);

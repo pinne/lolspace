@@ -18,7 +18,7 @@ public class Control implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        gameworld.clickBlock(cell);
-        view.updateCells();
+        if (gameworld.clickBlock(cell))
+            view.updateCells();
     }
 }

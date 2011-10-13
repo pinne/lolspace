@@ -17,7 +17,7 @@ public class ViewCell extends JButton {
         setColor(gameworld.getType(i, j));
         setBorderPainted(false);
         setDead();
-        this.addMouseListener(new Control(gameworld, view, cell));
+        this.addActionListener(new Control(gameworld, view, cell));
     }
 
     public boolean isAlive() {

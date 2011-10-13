@@ -24,7 +24,7 @@ public class GameWorld {
     public void moveRows() {
         for (int i = 0; i < cellRows - 2; i++) {
             for (int j = 0; j < cellCols; j++) {
-                blocks[i][j] = blocks[i + 1][j].getObject();
+//                blocks[i][j] = blocks[i + 1][j].getObject();
             }
         }
     }

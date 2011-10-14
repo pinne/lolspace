@@ -1,23 +1,38 @@
-package collapse;
+/*
+ * ViewCell
+ * 
+ * Copyright Simon Kers - KTH 2011.
+ */
+package gui;
 
 import java.awt.Color;
-import java.awt.Point;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.border.Border;
 
+import collapse.GameWorld;
+
+/**
+ * 
+ * @author simon
+ *
+ */
 public class ViewCell extends JButton {
 
     private static final long serialVersionUID = 1L;
     private boolean alive;
-    private Point cell;
+    private static final int DEAD = -1;
+    private static final int BLOOD = -2;
 
-    public ViewCell(GameWorld gameworld, View view, int i, int j) {
-        cell = new Point(i, j);
+    public ViewCell(GameWorld gameworld, WindowPanel panel, int i, int j) {
         this.setBackground(Color.LIGHT_GRAY);
         setColor(gameworld.getType(i, j));
         setBorderPainted(false);
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        this.setBorder(blackline);
         setDead();
-        this.addActionListener(new Control(gameworld, view, cell));
+        this.addActionListener(new Control(gameworld, panel, i, j));
     }
 
     public boolean isAlive() {
@@ -43,7 +58,10 @@ public class ViewCell extends JButton {
         Color palegreen = new Color(152, 251, 152);
 
         switch (type) {
-        case -1:
+        case BLOOD:
+            this.setBackground(Color.RED);
+            break;
+        case DEAD:
             this.setBackground(Color.LIGHT_GRAY);
             break;
         case 0:

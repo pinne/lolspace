@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 
 import lolspace.GameWorld;
 
-
 public class MainPanel extends JFrame {
 
     private static final long serialVersionUID = 8250468227892863504L;
@@ -28,7 +27,6 @@ public class MainPanel extends JFrame {
         this.getContentPane().add(menu, BorderLayout.NORTH);
         this.getContentPane().add(grid, BorderLayout.CENTER);
         this.getContentPane().add(scores, BorderLayout.SOUTH);
-        
 
         this.setVisible(true);
     }

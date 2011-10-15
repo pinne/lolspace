@@ -14,7 +14,6 @@ import javax.swing.*;
 
 import lolspace.GameWorld;
 
-
 /**
  * 
  * @author simon
@@ -92,6 +91,6 @@ public class CellGrid extends JPanel implements Observer {
     }
 
     public void clickBlock(int i, int j) {
-        gw.clickBlock(i, j);        
+        gw.clickBlock(i, j);
     }
 }

@@ -34,7 +34,7 @@ public class GameWorld extends Observable {
         newRow();
         moveRows();
         newRow();
-        
+
         setChanged();
         notifyObservers();
     }
@@ -45,14 +45,14 @@ public class GameWorld extends Observable {
             int nBlocks = destroy(i, j, blocks[i][j]);
             if (nBlocks < 3)
                 return false;
-            
+
             score(nBlocks);
             gravity(nBlocks);
             moveRows();
             newRow();
             if (gameOverCheck())
                 running = false;
-            
+
             this.notifyObservers();
             return true;
         } else {

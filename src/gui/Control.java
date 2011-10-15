@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 
 import lolspace.GameWorld;
 
-
 /**
  * 
  * @author simon

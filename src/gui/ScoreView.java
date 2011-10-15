@@ -14,7 +14,6 @@ import javax.swing.*;
 
 import lolspace.GameWorld;
 
-
 /**
  * 
  * @author simon

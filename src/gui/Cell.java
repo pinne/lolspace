@@ -24,7 +24,6 @@ public class Cell extends JButton implements ActionListener {
     private CellGrid grid;
     private int i;
     private int j;
-    private boolean alive;
     private static final int EMPTY = -1;
     private static final int BLOOD = -2;
 
@@ -38,10 +37,6 @@ public class Cell extends JButton implements ActionListener {
         this.setBorder(blackline);
         setDead();
         this.addActionListener(new CellListener(grid, this, i, j));
-    }
-
-    public boolean isAlive() {
-        return alive;
     }
 
     public void setDead() {

@@ -1,46 +1,88 @@
+/*
+ * GameWorld
+ * 
+ * Copyright Simon Kers - KTH 2011.
+ */
 package collapse;
 
-import java.awt.Point;
 import java.util.Random;
 
+/**
+ * 
+ * @author simon
+ * 
+ */
 public class GameWorld {
     private static final Random RANDOM = new Random();
-    private int[][] blocks = null;
+    private static final int DEAD = -1;
+    private int[][] blocks;
     private int cellRows;
     private int cellCols;
+    private boolean running;
+
     private int gameScore;
 
     public GameWorld(int cellRows, int cellCols) {
+        running = true;
         this.cellRows = cellRows;
         this.cellCols = cellCols;
         this.gameScore = 0;
         blocks = new int[cellRows][cellCols];
         fillWithBlocks();
+        randomFill();
+        newRow();
+        moveRows();
         newRow();
     }
 
-    public boolean clickBlock(Point cell) {
-        System.out.println("clickBlock: " + cell.toString());
-        if (blocks[cell.x][cell.y] >= 0) {
-            int points = destroy(cell.x, cell.y, blocks[cell.x][cell.y]);
-            gameScore += points;
-            System.out.println("+ " + points + ": " + gameScore);
-            gravity(points);
+    public boolean clickBlock(int i, int j) {
+        if (blocks[i][j] >= 0 && running) {
+            int nBlocks = destroy(i, j, blocks[i][j]);
+            if (nBlocks < 3)
+                return false;
+            score(nBlocks);
+            gravity(nBlocks);
             moveRows();
             newRow();
+            if (gameOverCheck())
+                running = false;
             return true;
         } else {
             return false;
         }
     }
 
+    public int getScore() {
+        return gameScore;
+    }
+
+    public int getType(int i, int j) {
+        return blocks[i][j];
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    private boolean gameOverCheck() {
+        for (int j = 0; j < cellCols; j++)
+            if (blocks[0][j] != DEAD)
+                return true;
+
+        return false;
+    }
+
+    private void score(int nBlocks) {
+        gameScore += Math.pow(nBlocks, 1.5);
+    }
+
     private void gravity(int n) {
         while (n-- > 0) {
             for (int i = cellRows - 2; i > 0; i--) {
                 for (int j = 0; j < cellCols; j++) {
-                    if (blocks[i + 1][j] == -1) {
+                    if (blocks[i + 1][j] == DEAD) {
                         blocks[i + 1][j] = blocks[i][j];
-                        blocks[i][j] = -1;
+                        blocks[i][j] = DEAD;
                     }
                 }
             }
@@ -54,7 +96,7 @@ public class GameWorld {
                 || blocks[x][y] != target) {
             return 0;
         } else {
-            blocks[x][y] = -1;
+            blocks[x][y] = DEAD;
             points++;
             points += destroy(x - 1, y, target);
             points += destroy(x + 1, y, target);
@@ -67,14 +109,14 @@ public class GameWorld {
     private void fillWithBlocks() {
         for (int i = 0; i < cellRows - 1; i++) {
             for (int j = 0; j < cellCols; j++) {
-                blocks[i][j] = -1;
+                blocks[i][j] = DEAD;
             }
         }
     }
 
     private void newRow() {
         for (int j = 0; j < cellCols; j++)
-            blocks[cellRows - 1][j] = RANDOM.nextInt(4);
+            blocks[cellRows - 1][j] = RANDOM.nextInt(3);
     }
 
     private void moveRows() {
@@ -85,8 +127,16 @@ public class GameWorld {
         }
     }
 
-    public int getType(int i, int j) {
-        return blocks[i][j];
+    private void randomFill() {
+        int n = 0;
+        for (int i = 0; i < cellRows - 1; i++) {
+            for (int j = 0; j < cellCols; j++) {
+                if (RANDOM.nextInt(10) == 0) {
+                    blocks[i][j] = RANDOM.nextInt(3);
+                    n++;
+                }
+            }
+        }
+        gravity(n * cellRows);
     }
-
 }

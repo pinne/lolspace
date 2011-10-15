@@ -1,78 +1,68 @@
-/*
- * View
+/* 
+ * WindowPanel
  * 
  * Copyright Simon Kers - KTH 2011.
  */
-
 package gui;
 
-import java.awt.*;
-
 import javax.swing.*;
-
 import collapse.GameWorld;
+import java.awt.BorderLayout;
 
 /**
  * 
  * @author simon
- *
+ * 
  */
-public class View extends JPanel {
+public class View extends JFrame {
 
+    /**
+     * 
+     */
     private static final long serialVersionUID = 1L;
-    private GameWorld gameworld;
-    private ViewCell[][] cells;
-    private WindowPanel panel;
-    private int cellRows;
-    private int cellCols;
-    private static final int DEAD = -1;
+    private GameWorld gw;
+    private CellGrid grid;
+    private ScoreView scores;
+    private Menu menu;
 
-    public View(GameWorld world, WindowPanel panel, int cellrows, int cellcols, int cellwidth,
-            int cellheight) {
-        super();
-        this.setBackground(Color.DARK_GRAY);
-        this.gameworld = world;
-        this.panel = panel;
-        this.cellRows = cellrows;
-        this.cellCols = cellcols;
-        this.setLayout(new GridLayout(cellrows, cellcols));
-        this.setPreferredSize(new Dimension(cellwidth * cellcols, cellheight
-                * cellrows));
+    public View(String title, GameWorld gw, int cellRows, int cellCols,
+            int cellWidth, int cellHeight) {
+        super(title);
 
-        cells = new ViewCell[cellrows][cellcols];
-        this.initCells(cellrows, cellcols, cellwidth, cellheight);
-        updateCells();
+        this.gw = gw;
+        this.grid = new CellGrid(this, cellRows, cellCols, cellWidth,
+                cellHeight);
+
+        this.scores = new ScoreView(this);
+        this.menu = new Menu(this);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(cellCols * cellHeight, cellRows * cellWidth);
+        this.getContentPane().add(grid, BorderLayout.CENTER);
+        this.getContentPane().add(scores, BorderLayout.SOUTH);
+        this.getContentPane().add(menu, BorderLayout.NORTH);
+        this.setVisible(true);
     }
 
-    public void updateCells() {
-        if (!gameworld.isRunning())
-            gameOver();
-        for (int i = 0; i < cellRows - 0; i++) {
-            for (int j = 0; j < cellCols; j++) {
-                if (gameworld.getType(i, j) >= 0) {
-                    cells[i][j].setAlive();
-                    cells[i][j].setColor(gameworld.getType(i, j));
-                } else {
-                    cells[i][j].setDead();
-                    cells[i][j].setColor(DEAD);
-                }
-            }
+    public void updateViews() {
+        if (gw.isRunning()) {
+            grid.updateCells();
+            scores.updateScore();
+        } else {
+            grid.gameOver();
+            scores.gameOver();
         }
     }
 
-    private void gameOver() {
-        
+    public int getScore() {
+        return gw.getScore();
     }
 
-    private void initCells(int cellrows, int cellcols, int cellwidth,
-            int cellheight) {
-        for (int i = 0; i < cellrows; i++) {
-            for (int j = 0; j < cellcols; j++) {
-                cells[i][j] = new ViewCell(gameworld, panel, i, j);
-                cells[i][j].setPreferredSize(new Dimension(cellwidth,
-                        cellheight));
-                this.add(cells[i][j]);
-            }
-        }
+    public boolean clickBlock(int i, int j) {
+        return gw.clickBlock(i, j);
+    }
+
+    public int getType(int i, int j) {
+        return gw.getType(i, j);
     }
 }

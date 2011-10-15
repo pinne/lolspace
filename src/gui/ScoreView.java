@@ -9,8 +9,6 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import collapse.GameWorld;
-
 /**
  * 
  * @author simon
@@ -19,11 +17,11 @@ import collapse.GameWorld;
 public class ScoreView extends JPanel {
 
     private static final long serialVersionUID = 4108750243244518957L;
-    private GameWorld world;
+    private View panel;
     private JLabel scoresLabel;
     
-    public ScoreView(GameWorld world) {
-        this.world = world;
+    public ScoreView(View panel) {
+        this.panel = panel;
         Color midnightblue = new Color(25, 25, 112);
         this.setForeground(midnightblue);
         Color gainsboro = new Color(220, 220, 220);
@@ -35,7 +33,11 @@ public class ScoreView extends JPanel {
     
     public void updateScore() {
         int score;
-        score = world.getScore();
+        score = panel.getScore();
         scoresLabel.setText("Score: " + score);
+    }
+
+    public void gameOver() {
+        updateScore();
     }
 }

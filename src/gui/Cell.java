@@ -11,28 +11,27 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 
-import collapse.GameWorld;
-
 /**
  * 
  * @author simon
  *
  */
-public class ViewCell extends JButton {
+public class Cell extends JButton {
 
     private static final long serialVersionUID = 1L;
     private boolean alive;
-    private static final int DEAD = -1;
+    private static final int EMPTY = -1;
     private static final int BLOOD = -2;
+    private static final int BLACK = -3;
 
-    public ViewCell(GameWorld gameworld, WindowPanel panel, int i, int j) {
+    public Cell(View view, int i, int j) {
         this.setBackground(Color.LIGHT_GRAY);
-        setColor(gameworld.getType(i, j));
+        setColor(view.getType(i, j));
         setBorderPainted(false);
         Border blackline = BorderFactory.createLineBorder(Color.black);
         this.setBorder(blackline);
         setDead();
-        this.addActionListener(new Control(gameworld, panel, i, j));
+        this.addActionListener(new Control(view, i, j));
     }
 
     public boolean isAlive() {
@@ -58,15 +57,17 @@ public class ViewCell extends JButton {
         Color palegreen = new Color(152, 251, 152);
 
         switch (type) {
-        case BLOOD:
+        case BLACK: // -3
+            this.setBackground(Color.BLACK);
+            break;
+        case BLOOD: // -2
             this.setBackground(Color.RED);
             break;
-        case DEAD:
+        case EMPTY: // -1
             this.setBackground(Color.LIGHT_GRAY);
             break;
         case 0:
             this.setBackground(hotpink);
-            this.setForeground(palegreen);
             break;
         case 1:
             this.setBackground(lightskyblue);

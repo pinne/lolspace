@@ -6,38 +6,72 @@
 package gui;
 
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Random;
 
 import javax.swing.*;
+
+import lolspace.GameWorld;
+
 
 /**
  * 
  * @author simon
- *
+ * 
  */
-public class ScoreView extends JPanel {
+public class ScoreView extends JPanel implements Observer {
 
     private static final long serialVersionUID = 4108750243244518957L;
-    private View panel;
+    private static final Random RANDOM = new Random();
     private JLabel scoresLabel;
-    
-    public ScoreView(View panel) {
-        this.panel = panel;
+    private JLabel quotesLabel;
+    private static final String[] quotes = { "you are beautiful",
+            "you are doing great", "", "<3", ":-)", ";)", "super",
+            "GOGOGOGO!!!", "great move!", "let's go!", "stay positive",
+            "keep it up", ":D", "a lol a day", "thx 4 being u",
+            "you are loved", "find a friend in everyone" };
+
+    private Color myBackground;
+
+    public ScoreView(GameWorld gw) {
+        gw.addObserver(this);
+
         Color midnightblue = new Color(25, 25, 112);
         this.setForeground(midnightblue);
         Color gainsboro = new Color(220, 220, 220);
-        this.setBackground(gainsboro);
+        this.myBackground = gainsboro;
+        this.setBackground(myBackground);
         scoresLabel = new JLabel("Score: ");
-        this.setPreferredSize(new Dimension(56, 32));
+        quotesLabel = new JLabel("");
+        setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        this.setPreferredSize(new Dimension(100, 42));
         this.add(scoresLabel);
-    }
-    
-    public void updateScore() {
-        int score;
-        score = panel.getScore();
-        scoresLabel.setText("Score: " + score);
+        scoresLabel.setHorizontalAlignment(JLabel.LEFT);
+        this.add(quotesLabel);
+        quotesLabel.setHorizontalAlignment(JLabel.RIGHT);
+        this.update(gw, null);
     }
 
-    public void gameOver() {
-        updateScore();
+    @Override
+    public void update(Observable o, Object arg) {
+        int score;
+        GameWorld gw = (GameWorld) o;
+        score = gw.getScore();
+        scoresLabel.setText("Score: " + score);
+
+        if (gw.gameOverCheck()) {
+            quotesLabel.setText("game over idiot");
+        } else if (gw.almostGameOver()) {
+            this.setBackground(Color.LIGHT_GRAY);
+            quotesLabel.setText("watch out!");
+        } else {
+            quotesLabel.setText("" + quotesText());
+            this.setBackground(myBackground);
+        }
+    }
+
+    private String quotesText() {
+        return quotes[RANDOM.nextInt(quotes.length)];
     }
 }

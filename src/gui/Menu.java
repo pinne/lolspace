@@ -1,17 +1,21 @@
 package gui;
 
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Menu extends JMenuBar {
-    private JFrame frame;
-    private View panel;
+import lolspace.GameWorld;
+
+public class Menu extends JMenuBar implements Observer {
+    private MainPanel panel;
+    private GameWorld gw;
     private static final long serialVersionUID = -5617155576631422259L;
     private String[] instructionsText = { "lolspace!" + "\n\n",
             "A turn-based puzzle game." + "\n\n",
@@ -32,8 +36,10 @@ public class Menu extends JMenuBar {
     private String[] creditsText = { "lolspace!", " ",
             "\u00a9 pinne - Varm kod", "STHD Fame - KTH 2011" };
 
-    public Menu(View frame) {
-        this.frame = frame;
+    public Menu(MainPanel panel, GameWorld gw) {
+        this.panel = panel;
+        this.gw = gw;
+        gw.addObserver(this);
         JMenu fileMenu = getFileMenu();
         this.add(fileMenu);
         JMenu gameMenu = getGameMenu();
@@ -47,7 +53,7 @@ public class Menu extends JMenuBar {
         JMenuItem newItem = new JMenuItem("New game");
         newItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-
+                
             }
         });
 
@@ -70,7 +76,7 @@ public class Menu extends JMenuBar {
         JMenuItem smallItem = new JMenuItem("Small 12x16");
         smallItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                panel.setSize(12, 16);
+                gw.setSize(12, 16);
             }
         });
         JMenuItem mediumItem = new JMenuItem("Medium 24x32");
@@ -108,7 +114,7 @@ public class Menu extends JMenuBar {
         JMenuItem instructionsItem = new JMenuItem("Instructions");
         instructionsItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                JOptionPane.showMessageDialog(frame, instructionsText,
+                JOptionPane.showMessageDialog(panel, instructionsText,
                         "Instructions", JOptionPane.PLAIN_MESSAGE, null);
             }
         });
@@ -117,12 +123,18 @@ public class Menu extends JMenuBar {
         JMenuItem creditsItem = new JMenuItem("Credits");
         creditsItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                JOptionPane.showMessageDialog(frame, creditsText, "Credits",
+                JOptionPane.showMessageDialog(panel, creditsText, "Credits",
                         JOptionPane.PLAIN_MESSAGE, null);
             }
         });
         helpMenu.add(creditsItem);
 
         return helpMenu;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // TODO Auto-generated method stub
+        
     }
 }

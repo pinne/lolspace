@@ -4,14 +4,16 @@
  * Copyright Simon Kers - KTH 2011.
  */
 
-package collapse;
+package lolspace;
 
-import gui.View;
+import java.awt.EventQueue;
+
+import gui.MainPanel;
 
 /**
  * 
  * @author simon
- *
+ * 
  */
 public class Main {
     private final static String title = "lolspace!";
@@ -21,9 +23,17 @@ public class Main {
     private final static int CELLHEIGHT = 32;
 
     public static void main(String[] args) {
-        GameWorld gw = new GameWorld(CELLROWS, CELLCOLS);
-        new View(title, gw, CELLROWS, CELLCOLS, CELLWIDTH, CELLHEIGHT);
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Main().create();
+            }
+        });
 
         System.out.println("Main done.");
+    }
+
+    private void create() {
+        new MainPanel(title, CELLROWS, CELLCOLS, CELLWIDTH, CELLHEIGHT);
     }
 }

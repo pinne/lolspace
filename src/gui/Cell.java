@@ -6,6 +6,8 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,57 +16,52 @@ import javax.swing.border.Border;
 /**
  * 
  * @author simon
- *
+ * 
  */
-public class Cell extends JButton {
+public class Cell extends JButton implements ActionListener {
 
     private static final long serialVersionUID = 1L;
+    private CellGrid grid;
+    private int i;
+    private int j;
     private boolean alive;
     private static final int EMPTY = -1;
     private static final int BLOOD = -2;
-    private static final int BLACK = -3;
 
-    public Cell(View view, int i, int j) {
+    public Cell(CellGrid grid, int i, int j) {
+        this.grid = grid;
+        this.i = i;
+        this.j = j;
         this.setBackground(Color.LIGHT_GRAY);
-        setColor(view.getType(i, j));
         setBorderPainted(false);
         Border blackline = BorderFactory.createLineBorder(Color.black);
         this.setBorder(blackline);
         setDead();
-        this.addActionListener(new Control(view, i, j));
+        this.addActionListener(new CellListener(grid, this, i, j));
     }
 
     public boolean isAlive() {
         return alive;
     }
 
-    public void setAlive() {
-        this.setColor(2);
-        this.setOpaque(true);
-        this.alive = true;
-    }
-
     public void setDead() {
-        this.setOpaque(true);
-        this.alive = false;
-        this.setColor(-1);
+        setColor(EMPTY);
     }
 
     public void setColor(int type) {
+        Color lightcyan = new Color(224, 255, 255);
+        Color red = new Color(185, 40, 20);
         Color hotpink = new Color(255, 105, 180);
         Color lightskyblue = new Color(135, 206, 250);
         Color orange = new Color(255, 165, 0);
         Color palegreen = new Color(152, 251, 152);
 
         switch (type) {
-        case BLACK: // -3
-            this.setBackground(Color.BLACK);
-            break;
         case BLOOD: // -2
-            this.setBackground(Color.RED);
+            this.setBackground(red);
             break;
         case EMPTY: // -1
-            this.setBackground(Color.LIGHT_GRAY);
+            this.setBackground(lightcyan);
             break;
         case 0:
             this.setBackground(hotpink);
@@ -79,5 +76,9 @@ public class Cell extends JButton {
             this.setBackground(palegreen);
             break;
         }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        grid.clickBlock(i, j);
     }
 }

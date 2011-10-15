@@ -8,27 +8,29 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import lolspace.GameWorld;
+
+
 /**
  * 
  * @author simon
- *
+ * 
  */
 public class Control implements ActionListener {
 
-    private View view = null;
-    private int i;
-    private int j;
+    private GameWorld gw;
+    private CellGrid view;
+    private ScoreView viewScores;
 
-    public Control(View view, int i, int j) {
-        this.view = view;
-        this.i = i;
-        this.j = j;
+    public Control(GameWorld gw, CellGrid grid, ScoreView scores) {
+        this.gw = gw;
+        this.view = grid;
+        this.viewScores = scores;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (view.clickBlock(i, j)) {
-            view.updateViews();
-        }
+        view.update(gw, null);
+        viewScores.update(gw, null);
     }
 }

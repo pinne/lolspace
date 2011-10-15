@@ -3,8 +3,9 @@
  * 
  * Copyright Simon Kers - KTH 2011.
  */
-package collapse;
+package lolspace;
 
+import java.util.Observable;
 import java.util.Random;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Random;
  * @author simon
  * 
  */
-public class GameWorld {
+public class GameWorld extends Observable {
     private static final Random RANDOM = new Random();
     private static final int DEAD = -1;
     private int[][] blocks;
@@ -33,21 +34,29 @@ public class GameWorld {
         newRow();
         moveRows();
         newRow();
+        
+        setChanged();
+        notifyObservers();
     }
 
     public boolean clickBlock(int i, int j) {
+        setChanged();
         if (blocks[i][j] >= 0 && running) {
             int nBlocks = destroy(i, j, blocks[i][j]);
             if (nBlocks < 3)
                 return false;
+            
             score(nBlocks);
             gravity(nBlocks);
             moveRows();
             newRow();
             if (gameOverCheck())
                 running = false;
+            
+            this.notifyObservers();
             return true;
         } else {
+            this.notifyObservers();
             return false;
         }
     }
@@ -64,9 +73,17 @@ public class GameWorld {
         return running;
     }
 
-    private boolean gameOverCheck() {
+    public boolean gameOverCheck() {
         for (int j = 0; j < cellCols; j++)
             if (blocks[0][j] != DEAD)
+                return true;
+
+        return false;
+    }
+
+    public boolean almostGameOver() {
+        for (int j = 0; j < cellCols; j++)
+            if (blocks[1][j] >= 0)
                 return true;
 
         return false;
@@ -138,5 +155,18 @@ public class GameWorld {
             }
         }
         gravity(n * cellRows);
+    }
+
+    public int getCellRows() {
+        return cellRows;
+    }
+
+    public int getCellCols() {
+        return cellCols;
+    }
+
+    public void setSize(int i, int j) {
+        cellRows = i;
+        cellCols = j;
     }
 }

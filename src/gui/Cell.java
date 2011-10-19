@@ -6,8 +6,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,19 +16,14 @@ import javax.swing.border.Border;
  * @author simon
  * 
  */
-public class Cell extends JButton implements ActionListener {
+public class Cell extends JButton {
 
     private static final long serialVersionUID = 1L;
-    private CellGrid grid;
-    private int i;
-    private int j;
     private static final int EMPTY = -1;
-    private static final int BLOOD = -2;
+    private static final int GAMEOVER = -2;
+    private static final int ALMOSTGAMEOVER = -3;
 
     public Cell(CellGrid grid, int i, int j) {
-        this.grid = grid;
-        this.i = i;
-        this.j = j;
         this.setBackground(Color.LIGHT_GRAY);
         setBorderPainted(false);
         Border blackline = BorderFactory.createLineBorder(Color.black);
@@ -44,16 +37,20 @@ public class Cell extends JButton implements ActionListener {
     }
 
     public void setColor(int type) {
+        Color darkerlightcyan = new Color(212, 245, 245);
         Color lightcyan = new Color(224, 255, 255);
-        Color red = new Color(185, 40, 20);
+        Color grayish = new Color(175, 185, 185);
         Color hotpink = new Color(255, 105, 180);
         Color lightskyblue = new Color(135, 206, 250);
         Color orange = new Color(255, 165, 0);
         Color palegreen = new Color(152, 251, 152);
 
         switch (type) {
-        case BLOOD: // -2
-            this.setBackground(red);
+        case ALMOSTGAMEOVER:
+            this.setBackground(darkerlightcyan);
+            break;
+        case GAMEOVER: // -2
+            this.setBackground(grayish);
             break;
         case EMPTY: // -1
             this.setBackground(lightcyan);
@@ -71,9 +68,5 @@ public class Cell extends JButton implements ActionListener {
             this.setBackground(palegreen);
             break;
         }
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        grid.clickBlock(i, j);
     }
 }

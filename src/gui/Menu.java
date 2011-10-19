@@ -5,7 +5,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -15,7 +14,6 @@ import lolspace.GameWorld;
 
 public class Menu extends JMenuBar implements Observer {
     private MainPanel panel;
-    private GameWorld gw;
     private static final long serialVersionUID = -5617155576631422259L;
     private String[] instructionsText = { "lolspace!" + "\n\n",
             "A turn-based puzzle game." + "\n\n",
@@ -25,20 +23,20 @@ public class Menu extends JMenuBar implements Observer {
             "stacked above will collapse down.",
             "With each click a new row of blocks",
             " appear from the bottom, the game is ",
-            "over when the blocks reach the top of",
-            "the board." + "\n\n",
+            "over when the blocks reach the top of", "the board." + "\n\n",
 
             "Each destroyed group gives a score of",
             "n^1.5 where n is the number of blocks,",
-            "the decimal part always rounds down.",
+            "the decimal part always rounds down." + "\n\n",
+
             "Players compete to beat the high score." };
 
     private String[] creditsText = { "lolspace!", " ",
-            "\u00a9 pinne - Varm kod", "STHD Fame - KTH 2011" };
+            "\u00a9 pinne - Varm kod", "STHD Fame - KTH 2011." + "\n\n",
+            "thanks to", "linda, davve, koden & freppe." };
 
     public Menu(MainPanel panel, GameWorld gw) {
         this.panel = panel;
-        this.gw = gw;
         gw.addObserver(this);
         JMenu fileMenu = getFileMenu();
         this.add(fileMenu);
@@ -53,7 +51,7 @@ public class Menu extends JMenuBar implements Observer {
         JMenuItem newItem = new JMenuItem("New game");
         newItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                
+                panel.newGame();
             }
         });
 
@@ -73,28 +71,31 @@ public class Menu extends JMenuBar implements Observer {
         JMenu gameMenu = new JMenu("Game");
         this.add(gameMenu);
         JMenu sizeItem = new JMenu("Size");
-        JMenuItem smallItem = new JMenuItem("Small 12x16");
+        JMenuItem smallItem = new JMenuItem("Small 8x12");
         smallItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                gw.setSize(12, 16);
+                panel.setBoardSize(8, 12);
+                panel.newGame();
             }
         });
-        JMenuItem mediumItem = new JMenuItem("Medium 24x32");
+        JMenuItem mediumItem = new JMenuItem("Medium 12x16");
         mediumItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-
+                panel.setBoardSize(12, 16);
+                panel.newGame();
             }
         });
-        JMenuItem largeItem = new JMenuItem("Large 64x64");
+        JMenuItem largeItem = new JMenuItem("Large 16x16");
         largeItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-
+                panel.setBoardSize(16, 16);
+                panel.newGame();
             }
         });
         JMenuItem highScoreItem = new JMenuItem("High score");
         highScoreItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-
+                panel.showHighscore();
             }
         });
 
@@ -135,6 +136,6 @@ public class Menu extends JMenuBar implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         // TODO Auto-generated method stub
-        
+
     }
 }

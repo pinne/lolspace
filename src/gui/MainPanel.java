@@ -1,3 +1,8 @@
+/*
+ * MainPanel
+ * 
+ * Copyright Simon Kers - KTH 2011.
+ */
 package gui;
 
 import highscore.HighScore;
@@ -11,70 +16,50 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
+/**
+ * 
+ */
 public class MainPanel extends JFrame implements Observer {
 
     private static final long serialVersionUID = 8250468227892863504L;
+    private final static String TITLE = "lolspace!";
+    private String FILENAME = "lolspace.highscore";
+    private int CELLROWS = 16;
+    private int CELLCOLS = 12;
+    private final static int CELLWIDTH = 32;
+    private final static int CELLHEIGHT = 32;
     private GameWorld gw;
+    private CellGrid grid;
     private HighScore highscore;
     private Menu menu;
-    private CellGrid grid;
-    private ScoreView scores;
-    private int CELLROWS;
-    private int CELLCOLS;
-    private int CELLWIDTH;
-    private int CELLHEIGHT;
+    private ScoreView scoreBar;
 
-    public MainPanel(String title, String filename, int cellRows, int cellCols,
-            int cellWidth, int cellHeight) {
-
-        super(title);
-        this.CELLROWS = cellRows;
-        this.CELLCOLS = cellCols;
-        this.CELLWIDTH = cellWidth;
-        this.CELLHEIGHT = cellHeight;
-
-        this.gw = new GameWorld(this, cellRows, cellCols);
-        grid = new CellGrid(gw, CELLCOLS, CELLROWS, CELLWIDTH, CELLHEIGHT);
-        scores = new ScoreView(gw);
-        menu = new Menu(this, gw);
-
+    public MainPanel() {
+        super(TITLE);
+        this.menu = new Menu(this);
+        this.highscore = new HighScore(this, FILENAME);
         newGame();
-        initHighScore();
-        populatePanel();
     }
 
-    private void initHighScore() {
-        this.highscore = new HighScore(this);
+    public void newGame() {
+        if (grid != null)
+            this.getContentPane().remove(grid);
+        if (scoreBar != null)
+            this.getContentPane().remove(scoreBar);
+
+        this.gw = new GameWorld(this, CELLROWS, CELLCOLS);
+        this.grid = new CellGrid(CELLCOLS, CELLROWS, CELLWIDTH, CELLHEIGHT);
+        this.scoreBar = new ScoreView();
+
+        new Control(gw, grid, scoreBar);
+
+        populatePanel();
+        grid.update(gw);
     }
 
     public void setBoardSize(int cellCols, int cellRows) {
         this.CELLCOLS = cellCols;
         this.CELLROWS = cellRows;
-    }
-
-    private void populatePanel() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        this.setSize(CELLCOLS * CELLWIDTH, CELLROWS * CELLHEIGHT + 32);
-        this.getContentPane().add(menu, BorderLayout.NORTH);
-        this.getContentPane().add(grid, BorderLayout.CENTER);
-        this.getContentPane().add(scores, BorderLayout.SOUTH);
-
-        this.setVisible(true);
-    }
-
-    public void newGame() {
-        this.getContentPane().remove(menu);
-        this.getContentPane().remove(grid);
-        this.getContentPane().remove(scores);
-
-        this.gw = new GameWorld(this, CELLROWS, CELLCOLS);
-        this.grid = new CellGrid(gw, CELLCOLS, CELLROWS, CELLWIDTH, CELLHEIGHT);
-        this.scores = new ScoreView(gw);
-
-        new Control(gw, grid, scores);
-
-        populatePanel();
     }
 
     public void showHighscore() {
@@ -88,9 +73,24 @@ public class MainPanel extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         this.gw = (GameWorld) o;
+
+        scoreBar.update(gw);
+        grid.update(o);
+
         if (gw.isGameOver() && gw.isRunning()) {
             highscore.gameOver(gw.getScore());
             gw.setRunning(false);
         }
+    }
+    
+    private void populatePanel() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.setSize(CELLCOLS * CELLWIDTH, CELLROWS * CELLHEIGHT + 32);
+        this.getContentPane().add(menu, BorderLayout.NORTH);
+        this.getContentPane().add(grid, BorderLayout.CENTER);
+        this.getContentPane().add(scoreBar, BorderLayout.SOUTH);
+
+        this.setVisible(true);
     }
 }

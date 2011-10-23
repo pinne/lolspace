@@ -17,13 +17,14 @@ public class HighScore {
 
     private MainPanel panel;
     private ArrayList<Score> highscore;
-    private static final String HIGHSCORE_FILE = "lolspace.highscore";
+    private String filename;
     private String defaultName;
-    ObjectOutputStream outputStream = null;
-    ObjectInputStream inputStream = null;
+    private ObjectOutputStream outputStream = null;
+    private ObjectInputStream inputStream = null;
 
-    public HighScore(MainPanel panel) {
+    public HighScore(MainPanel panel, String filename) {
         this.panel = panel;
+        this.filename = filename;
         highscore = new ArrayList<Score>();
         defaultName = new String("xyzzy");
     }
@@ -44,15 +45,10 @@ public class HighScore {
         return highscore;
     }
 
-    private void sort() {
-        Collections.sort(highscore);
-    }
-
     @SuppressWarnings("unchecked")
     public void loadScoreFile() {
         try {
-            inputStream = new ObjectInputStream(new FileInputStream(
-                    HIGHSCORE_FILE));
+            inputStream = new ObjectInputStream(new FileInputStream(filename));
             highscore = (ArrayList<Score>) inputStream.readObject();
         } catch (FileNotFoundException e) {
             this.updateScoreFile();
@@ -77,8 +73,8 @@ public class HighScore {
 
     public void updateScoreFile() {
         try {
-            outputStream = new ObjectOutputStream(new FileOutputStream(
-                    HIGHSCORE_FILE));
+            outputStream = new ObjectOutputStream(
+                    new FileOutputStream(filename));
             outputStream.writeObject(highscore);
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(panel, e.getMessage(),
@@ -120,12 +116,16 @@ public class HighScore {
     }
 
     public void gameOver(int myScore) {
-        if (madeTheList(myScore)) {
+        if (madeTheListCheck(myScore)) {
             enterName(myScore);
         }
     }
 
-    private boolean madeTheList(int myScore) {
+    private void sort() {
+        Collections.sort(highscore);
+    }
+
+    private boolean madeTheListCheck(int myScore) {
         boolean madeIt = false;
 
         if (highscore.isEmpty()) {
@@ -145,7 +145,7 @@ public class HighScore {
     private void enterName(int myScore) {
         String name = JOptionPane.showInputDialog(panel, "Enter you name",
                 defaultName);
-        
+
         defaultName = name;
         addScore(name, myScore);
         this.sort();

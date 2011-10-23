@@ -8,7 +8,6 @@ package gui;
 
 import java.awt.*;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.*;
 
@@ -19,7 +18,7 @@ import lolspace.GameWorld;
  * @author simon
  * 
  */
-public class CellGrid extends JPanel implements Observer {
+public class CellGrid extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private static final Color NORMAL_COLOR = new Color(224, 255, 255);
@@ -30,11 +29,9 @@ public class CellGrid extends JPanel implements Observer {
     private int cellRows;
     private int cellCols;
 
-    public CellGrid(GameWorld gw, int cellcols, int cellrows, int cellwidth,
+    public CellGrid(int cellcols, int cellrows, int cellwidth,
             int cellheight) {
         super();
-        this.gw = gw;
-        gw.addObserver(this);
 
         this.setBackground(NORMAL_COLOR);
         this.cellRows = cellrows;
@@ -45,21 +42,22 @@ public class CellGrid extends JPanel implements Observer {
 
         cells = new Cell[cellrows][cellcols];
         initCells(cellrows, cellcols, cellwidth, cellheight);
-        update(gw, null);
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable o) {
         GameWorld gw = (GameWorld) o;
+        
         if (gw.isGameOver() || !gw.isRunning())
             this.gameOver(gw);
-        else if (gw.almostGameOver())
+        else if (gw.isAlmostGameOver())
             this.almostGameOver(gw);
         else
             updateCells(gw);
     }
 
-    private void updateCells(GameWorld gw) {
+    private void updateCells(GameWorld o) {
+        this.gw = (GameWorld) o;
+        
         for (int i = 0; i < cellRows - 0; i++) {
             for (int j = 0; j < cellCols; j++) {
                 if (gw.getType(i, j) >= 0) {
@@ -71,7 +69,9 @@ public class CellGrid extends JPanel implements Observer {
         }
     }
 
-    private void almostGameOver(GameWorld gw) {
+    private void almostGameOver(GameWorld o) {
+        this.gw = (GameWorld) o;
+        
         for (int i = 0; i < cellRows - 0; i++) {
             for (int j = 0; j < cellCols; j++) {
                 if (gw.getType(i, j) >= 0) {
@@ -84,7 +84,9 @@ public class CellGrid extends JPanel implements Observer {
         }
     }
 
-    public void gameOver(GameWorld gw) {
+    public void gameOver(GameWorld o) {
+        this.gw = (GameWorld) o;
+        
         for (int i = 0; i < cellRows - 0; i++) {
             for (int j = 0; j < cellCols; j++) {
                 if (gw.getType(i, j) >= 0) {

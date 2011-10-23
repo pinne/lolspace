@@ -3,6 +3,7 @@
  * 
  * Copyright Simon Kers - KTH 2011.
  */
+
 package gui;
 
 import java.awt.Color;
@@ -12,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.border.Border;
 
 /**
- * 
+ * The Cell class represents the visual cell in the grid. 
  * @author simon
  * 
  */

@@ -1,3 +1,8 @@
+/*
+ * Menu
+ * 
+ * Copyright Simon Kers - KTH 2011.
+ */
 package gui;
 
 import javax.swing.JMenu;
@@ -7,15 +12,11 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
 
-import lolspace.GameWorld;
-
-public class Menu extends JMenuBar implements Observer {
+public class Menu extends JMenuBar {
     private MainPanel panel;
     private static final long serialVersionUID = -5617155576631422259L;
-    private String[] instructionsText = { "lolspace!" + "\n\n",
+    private static final String[] INSTRUCTIONS_TEXT = { "lolspace!" + "\n\n",
             "A turn-based puzzle game." + "\n\n",
 
             "By clicking groups of 3 blocks or more,",
@@ -31,13 +32,12 @@ public class Menu extends JMenuBar implements Observer {
 
             "Players compete to beat the high score." };
 
-    private String[] creditsText = { "lolspace!", " ",
+    private static final String[] CREDITSTEXT = { "lolspace!", " ",
             "\u00a9 pinne - Varm kod", "STHD Fame - KTH 2011." + "\n\n",
-            "thanks to", "linda, davve, koden & freppe." };
+            "thanks to", "linda, davve, koden,", "freppe & #styrelserummet." };
 
-    public Menu(MainPanel panel, GameWorld gw) {
+    public Menu(MainPanel panel) {
         this.panel = panel;
-        gw.addObserver(this);
         JMenu fileMenu = getFileMenu();
         this.add(fileMenu);
         JMenu gameMenu = getGameMenu();
@@ -115,7 +115,7 @@ public class Menu extends JMenuBar implements Observer {
         JMenuItem instructionsItem = new JMenuItem("Instructions");
         instructionsItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                JOptionPane.showMessageDialog(panel, instructionsText,
+                JOptionPane.showMessageDialog(panel, INSTRUCTIONS_TEXT,
                         "Instructions", JOptionPane.PLAIN_MESSAGE, null);
             }
         });
@@ -124,18 +124,12 @@ public class Menu extends JMenuBar implements Observer {
         JMenuItem creditsItem = new JMenuItem("Credits");
         creditsItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                JOptionPane.showMessageDialog(panel, creditsText, "Credits",
+                JOptionPane.showMessageDialog(panel, CREDITSTEXT, "Credits",
                         JOptionPane.PLAIN_MESSAGE, null);
             }
         });
         helpMenu.add(creditsItem);
 
         return helpMenu;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        // TODO Auto-generated method stub
-
     }
 }

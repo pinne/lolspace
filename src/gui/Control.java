@@ -29,7 +29,7 @@ public class Control implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        view.update(gw, null);
-        viewScores.update(gw, null);
+        view.update(gw);
+        viewScores.update(gw);
     }
 }

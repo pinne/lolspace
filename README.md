@@ -1,4 +1,5 @@
 #lolspace!
+##Description
 This is a game quite similar to Collapse!
 
 lolspace! is a turn-based puzzle game.
@@ -12,5 +13,18 @@ Each destroyed group gives a score of n^1.5 where n is the number of blocks,
 the decimal part always rounds down.
 
 Players compete to beat the high score
+
+##Screenshots
+So, this is the game
+
+![Game board](screenshot1.png "Showing board")\
+
+---
+
+It even has highscore
+
+![Highscore](screenshot2.png "It even has highscore")\
+
+---
 
 Collapse! is copyright of GameHouse.

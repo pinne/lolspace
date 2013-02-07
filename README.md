@@ -23,7 +23,7 @@ So, this is the game
 
 It even has highscore
 
-![Highscore](https://raw.github.com/pinne/lolspace/raw/master/screenshot2.png "It even has highscore")
+![Highscore](https://raw.github.com/pinne/lolspace/master/screenshot2.png "It even has highscore")
 
 ---
 

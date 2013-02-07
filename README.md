@@ -17,13 +17,13 @@ Players compete to beat the high score
 ##Screenshots
 So, this is the game
 
-![Game board](lolspace/raw/master/screenshot1.png "Showing board")
+![Game board](https://raw.github.com/pinne/lolspace/master/screenshot1.png "Showing board")
 
 ---
 
 It even has highscore
 
-![Highscore](lolspace/raw/master/screenshot2.png "It even has highscore")
+![Highscore](https://raw.github.com/pinne/lolspace/raw/master/screenshot2.png "It even has highscore")
 
 ---
 

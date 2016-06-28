@@ -27,4 +27,10 @@ It even has highscore
 
 ---
 
+Class UML
+
+![UML](https://raw.githubusercontent.com/pinne/lolspace/master/lolspace.png "UML of classes and interface")
+
+---
+
 Collapse! is copyright of GameHouse.
